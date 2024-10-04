@@ -4,7 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rezekoard.roomdatabase_apps.data.Note
-import com.rezekoard.roomdatabase_apps.data.NoteDao
+import com.rezekoard.roomdatabase_apps.data.NoteDatabase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,10 +14,15 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NoteViewModel(
-    private val dao: NoteDao
+
+@HiltViewModel
+class NoteViewModel @Inject constructor(
+    notesDatabase: NoteDatabase
 ): ViewModel() {
+
+    private val dao = notesDatabase.dao
 
     private val isSortedByDateAdded = MutableStateFlow(true)
 
